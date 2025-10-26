@@ -21,18 +21,16 @@ const user = require("./routes/user.js");
 // const MONGO_URL = "mongodb://127.0.0.1:27017/Wonderlust";
 const dbUrl = process.env.ATLASDB_URL;
 
-main()
-.then(() => {
-    console.log(dbUrl);
-})
-.catch((err) => {
-    console.log(err);
-});
 
 
-async function main () {
-    await mongoose.connect (dbUrl);
+async function main() {
+  console.log("Connecting to MongoDB...");
+  await mongoose.connect(dbUrl, { serverSelectionTimeoutMS: 10000 }); // 10 sec timeout
+  console.log("✅ MongoDB connected successfully!");
 }
+
+main().catch(err => console.error("❌ MongoDB connection failed:", err));
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join (__dirname,"views"));
